@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .form-input {
+    @apply rounded p-1 outline-none focus:bg-slate-200 text-stone-900 truncate;
+  }
+}
