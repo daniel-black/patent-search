@@ -5,9 +5,6 @@ import axiosClient from "../../utils/axios";
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { query } = req;
 
-  console.log('FROM API')
-  console.log(query);
-
   const qs = new URLSearchParams();
     for (const [key, value] of Object.entries(query)) {
       if (value !== '')

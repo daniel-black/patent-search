@@ -1,23 +1,36 @@
-import { FormInputs } from "../lib/types";
+import { FormInputs, PatentSearchResults } from "../lib/types";
 import { FieldErrorsImpl, useForm } from "react-hook-form";
 import axios from "axios";
+import { useState } from "react";
 
+type PublicationSearchFormProps = {
+  setSearchResults: (r: PatentSearchResults) => void,
+  setIsLoadingSearchResults: (isLoading: boolean) => void,
+};
 
-const PublicationSearchForm = (): JSX.Element => {
+const PublicationSearchForm = ({ 
+  setSearchResults, 
+  setIsLoadingSearchResults 
+}: PublicationSearchFormProps): JSX.Element => {
+  const [isLoading, setIsLoading] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm<FormInputs>();
 
   const onSubmit = async (data: FormInputs) => {
-    console.log(data);
+    setIsLoading(true);
+    setIsLoadingSearchResults(true);
     const query = new URLSearchParams();
     for (const [key, value] of Object.entries(data)) {
       if (value !== '')
         query.append(key, String(value));
     }
-    console.log(query.toString());
-
     const request = await axios.get('/api/publications?' + query);
+    const searchResults: PatentSearchResults = request.data;
 
-    console.log(request.data);
+    console.log(searchResults);
+
+    setIsLoading(false);
+    setIsLoadingSearchResults
+    setSearchResults(searchResults);
   }
 
   const handleError = (errors: FieldErrorsImpl<FormInputs>) => {
@@ -46,6 +59,7 @@ const PublicationSearchForm = (): JSX.Element => {
             type="radio" 
             value='utility'
             id="utility"
+            defaultChecked
           />
           <span>Utility</span>
         </label>
