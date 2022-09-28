@@ -29,7 +29,7 @@ const PublicationSearchForm = ({
     console.log(searchResults);
 
     setIsLoading(false);
-    setIsLoadingSearchResults
+    setIsLoadingSearchResults(false);
     setSearchResults(searchResults);
   }
 
@@ -189,8 +189,9 @@ const PublicationSearchForm = ({
         <input 
           {...register('rows')}
           type="number"
-          defaultValue={10}
-          step={5}
+          defaultValue={8}
+          // step={5}
+          min={1}
           className='form-input w-16'
           id="row"
         />
@@ -198,7 +199,8 @@ const PublicationSearchForm = ({
 
       <input 
         type="submit"
-        className="w-full bg-sky-500 rounded p-1 cursor-pointer" 
+        className={`${isLoading ? 'bg-stone-400 animate-pulse' : 'bg-sky-700'} w-full rounded p-1 cursor-pointer`}
+        disabled={isLoading}
       />
     </form>
   )
