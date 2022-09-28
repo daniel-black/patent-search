@@ -35,7 +35,7 @@ export type Patent = {
   furtherCPCSymbolArrayText: Array<string> | string | null,
   inventionSubjectMatterCategory: Category,
   inventionTitle: string,
-  inventorNameArrayText: Array<string>,
+  inventorNameArrayText: Array<string> | null,
   mainCPCSymbolText: string | null,
   patentApplicationNumber: string,
   publicationDate: string,

@@ -20,7 +20,7 @@ const Publications = (): JSX.Element => {
         />
       </section>
 
-      <main className="w-2/3 h-full bg-slate-800 p-2">
+      <main className="w-2/3 min-h-fit bg-slate-800 p-2">
         <div className="flex justify-between border-b border-sky-800 pb-2 mb-2">
           <h2 className="font-bold text-lg">Results</h2>
           <span className="opacity-60">
