@@ -11,7 +11,7 @@ const Publications = (): JSX.Element => {
 
 
   return (
-    <div className="flex h-full">
+    <div className="flex min-h-full">
       <section className="bg-slate-700 w-1/3 p-2 space-y-2">
         <h2 className="font-bold text-lg">Patent Search</h2>
         <PublicationSearchForm 

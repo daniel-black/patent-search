@@ -5,7 +5,7 @@ type LayoutProps = {
 
 const Layout = ({ children }: LayoutProps): JSX.Element => {
   return (
-    <div className="bg-stone-900 text-sky-200 w-full h-screen min-h-fit">
+    <div className="bg-slate-900 text-sky-200 w-full min-h-screen">
       {children}
     </div>
   );
