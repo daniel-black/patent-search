@@ -4,13 +4,22 @@ import axiosClient from "../../utils/axios";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { query } = req;
+
+  console.log('FROM API')
   console.log(query);
 
-  const requestString = `${publicationsEndpoint}?searchText=image`;
+  const qs = new URLSearchParams();
+    for (const [key, value] of Object.entries(query)) {
+      if (value !== '')
+        qs.append(key, String(value));
+    }
+
+  const requestString = `${publicationsEndpoint}?${qs}`;
+  console.log(requestString);
 
   const response = await axiosClient.get(requestString);
 
   console.log(response.data);
 
-  res.status(200).json({ numberOfResults: response.data.results.length });
+  res.status(200).json(response.data);
 }

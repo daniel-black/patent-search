@@ -1,35 +1,75 @@
-import { Category, FormInputs } from "../lib/types";
-import CategoryButton from "./CategoryButton";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { FormInputs } from "../lib/types";
+import { FieldErrorsImpl, useForm } from "react-hook-form";
+import axios from "axios";
 
 
 const PublicationSearchForm = (): JSX.Element => {
   const { register, handleSubmit, formState: { errors } } = useForm<FormInputs>();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data: FormInputs) => {
     console.log(data);
+    const query = new URLSearchParams();
+    for (const [key, value] of Object.entries(data)) {
+      if (value !== '')
+        query.append(key, String(value));
+    }
+    console.log(query.toString());
+
+    const request = await axios.get('/api/publications?' + query);
+
+    console.log(request.data);
+  }
+
+  const handleError = (errors: FieldErrorsImpl<FormInputs>) => {
+    console.error(errors);
   }
 
   return (
     <form 
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col p-2 space-y-2"
+      onSubmit={handleSubmit(onSubmit, handleError)}
+      className="flex flex-col space-y-2"
     >
-      <input 
+      
+      <textarea
         {...register('searchText')}
-        type="text"
         defaultValue={''}
         placeholder="Search for anything"
         className='form-input'
-      />
+        rows={3}
+      ></textarea>
 
-      <input 
-        {...register('inventionSubjectMatterCategory')}
-        type="text"
-        defaultValue={'utility'}
-        placeholder="Category"
-        className='form-input'
-      />
+      <div className="flex justify-around">
+        <label htmlFor="utility">
+          <input 
+            {...register('inventionSubjectMatterCategory')}
+            name="inventionSubjectMatterCategory"
+            type="radio" 
+            value='utility'
+            id="utility"
+          />
+          <span>Utility</span>
+        </label>
+        <label htmlFor="design">
+          <input 
+            {...register('inventionSubjectMatterCategory')}
+            name="inventionSubjectMatterCategory"
+            type="radio" 
+            value='design'
+            id="design"
+          />
+          <span>Design</span>
+        </label>
+        <label htmlFor="plant">
+          <input 
+            {...register('inventionSubjectMatterCategory')}
+            name="inventionSubjectMatterCategory" 
+            type="radio" 
+            value='plant'
+            id="plant"
+          />
+          <span>Plant</span>
+        </label>
+      </div>
 
       <input 
         {...register('publicationFromDate')}
@@ -119,25 +159,32 @@ const PublicationSearchForm = (): JSX.Element => {
         className='form-input'
       />
 
-      <input 
-        {...register('start')}
-        type="number"
-        defaultValue={0}
-        placeholder="Patent number to start search from"
-        className='form-input'
-      />
+      <label htmlFor="start" className="flex justify-between">
+        <span>Beginning record number</span>
+        <input 
+          {...register('start')}
+          type="number"
+          defaultValue={0}
+          className='form-input w-16'
+          id="start"
+        />
+      </label>
 
-      <input 
-        {...register('rows')}
-        type="number"
-        defaultValue={10}
-        placeholder="Results to return"
-        className='form-input'
-      />
+      <label htmlFor="row" className="flex justify-between">
+        <span>Max results returned</span>
+        <input 
+          {...register('rows')}
+          type="number"
+          defaultValue={10}
+          step={5}
+          className='form-input w-16'
+          id="row"
+        />
+      </label>
 
       <input 
         type="submit"
-        className="w-full bg-sky-500 rounded" 
+        className="w-full bg-sky-500 rounded p-1 cursor-pointer" 
       />
     </form>
   )

@@ -4,7 +4,7 @@ import * as https from 'https';
 
 const axiosClient = axios.create({
   baseURL: usptoUrl,
-  timeout: 12000,
+  timeout: 60000,
   headers: { "Content-Type": "application/json" },
   httpsAgent: new https.Agent({
     rejectUnauthorized: false
