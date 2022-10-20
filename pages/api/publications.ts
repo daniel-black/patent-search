@@ -12,11 +12,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
   const requestString = `${publicationsEndpoint}?${qs}`;
-  console.log(requestString);
-
   const response = await axiosClient.get(requestString);
-
-  console.log(response.data);
 
   res.status(200).json(response.data);
 }

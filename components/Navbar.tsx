@@ -12,13 +12,8 @@ const Navbar = (): JSX.Element => {
 
       <ul className="flex space-x-5">
         <li>
-          <Link href={'/search/publications'}>
-            <a>Publications</a>
-          </Link>
-        </li>
-        <li>
-          <Link href={'/search/grants'}>
-            <a>Grants</a>
+          <Link href={'/search/patents'}>
+            <a>Patents</a>
           </Link>
         </li>
       </ul>
