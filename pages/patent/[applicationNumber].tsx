@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 import axios from 'axios';
 import Spinner from '../../components/Spinner';
 import { Patent } from '../../lib/types';
+import Link from 'next/link';
 
 
 const PatentPage = (): JSX.Element => {
@@ -20,20 +21,20 @@ const PatentPage = (): JSX.Element => {
   
   if (status === 'loading') return <Spinner />;
   if (status === 'error') return <p>{JSON.stringify(error)}</p>;
-  const p = data ? data.results[0] as Patent : null;
+  const p = data && data?.results[0] ? data.results[0] as Patent : null;
 
-  const parseClaims = (): Array<string> => {
-    let claims: Array<string> = [];
-    let claimCount = 1;
+  // const parseClaims = (): Array<string> => {
+  //   let claims: Array<string> = [];
+  //   let claimCount = 1;
 
-    // split on ".X." where x is any number
-    // I'm gonna write a really shitty thing and then come back with regex superpowers
-    const blob = p?.claimText[0];
+  //   // split on ".X." where x is any number
+  //   // I'm gonna write a really shitty thing and then come back with regex superpowers
+  //   const blob = p?.claimText[0];
 
-    // I'm actually not going to do this right now as I am very 😴
+  //   // I'm actually not going to do this right now as I am very 😴
 
-    return claims;
-  }
+  //   return claims;
+  // }
 
   const renderAssignee = (): JSX.Element | null => {
     if (!p?.assigneeEntityName) return null;
@@ -52,12 +53,11 @@ const PatentPage = (): JSX.Element => {
         <p>Inventors</p>
         <ul className='flex space-x-1 flex-wrap'>
           {p?.inventorNameArrayText?.map(inventor => (
-            <li 
-              className='py-0.5 px-4 rounded-full bg-slate-800 border border-sky-900'
-              key={inventor}
-            >
-              {inventor}
-            </li>
+            <Link key={inventor} href={`/inventor/${inventor.replaceAll(' ', '-')}`}>
+              <li key={inventor} className='cursor-pointer py-0.5 px-4 rounded-full bg-slate-800 border border-sky-900'>
+                {inventor}
+              </li>
+            </Link>
           ))}
         </ul>
       </div>
@@ -68,8 +68,8 @@ const PatentPage = (): JSX.Element => {
     if (!p?.abstractText) return null;
     return (
       <details open={true}>
-        <summary>
-          Abstract
+        <summary className='cursor-pointer'>
+          <span className='ml-1'>Abstract</span>
           <hr className='border border-sky-900 mt-1.5' />
         </summary>
         <p className='leading-8 font-serif mt-1 indent-12 text-lg'>{p?.abstractText[0]}</p>
@@ -81,13 +81,13 @@ const PatentPage = (): JSX.Element => {
     if (p?.claimText.length === 0) return null;
     return (
       <details open={false}>
-        <summary>
-          Claims
+        <summary className='cursor-pointer'>
+          <span className='ml-1'>Claims</span>
           <hr className='border border-sky-900 mt-1.5' />
         </summary>
         <ul>
           {p?.claimText.map(claim => (
-            <li><p className='leading-8 font-serif mt-1 indent-12 text-lg'>{claim}</p></li>
+            <li key={claim.slice(0, 10)}><p className='leading-8 font-serif mt-1 indent-12 text-lg'>{claim}</p></li>
           ))}
         </ul>
       </details>
@@ -98,8 +98,8 @@ const PatentPage = (): JSX.Element => {
     if (p?.descriptionText.length === 0) return null;
     return (
       <details open={false}>
-        <summary>
-          Description
+        <summary className='cursor-pointer'>
+          <span className='ml-1'>Description</span>
           <hr className='border border-sky-900 mt-1.5' />
         </summary>
         <p className='leading-8 font-serif mt-1 indent-12 text-lg'>{p?.descriptionText}</p>
