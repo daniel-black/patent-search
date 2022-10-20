@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 import { Patent } from '../lib/types';
 
@@ -7,21 +8,23 @@ type ResultListItemProps = {
 
 const ResultListItem = ({ patent }: ResultListItemProps): JSX.Element => {
 
-  const renderInventionTitle = (): JSX.Element => {
-    return <h3 className='font-semibold leading-5 mb-2'>{patent.inventionTitle}</h3>;
+  const renderInventionTitleLink = (): JSX.Element => {
+    return (
+      <Link href={`/patent/${patent.patentApplicationNumber}`}>
+        <h3 className='cursor-pointer font-semibold leading-5 mb-2'>{patent.inventionTitle}</h3>
+      </Link>
+    );
   }
 
-  const renderCurrentAssignee = (): JSX.Element | null => {
+  const renderCurrentAssigneeLine = (): JSX.Element | null => {
     if (!patent.assigneeEntityName) return null;
     return (
-      <small className='block text-xs opacity-50'>
-        <i>{patent.assigneeEntityName}</i>
-      </small>
+      <p>{patent.assigneeEntityName} • {patent?.assigneePostalAddressText}</p>
     );
   }
 
   const renderApplicationNumber = (): JSX.Element => {
-    return <small className='block text-xs opacity-50'>{patent.patentApplicationNumber}</small>;
+    return <p>{patent.patentApplicationNumber}</p>;
   }
 
   const renderGrantDate = (): JSX.Element => {
@@ -29,14 +32,14 @@ const ResultListItem = ({ patent }: ResultListItemProps): JSX.Element => {
     const currentYear = new Date().getFullYear().toString();
     const dateString = year === currentYear ? patent.grantDate : year
 
-    return <small className='block text-xs opacity-50'>{dateString}</small>;
+    return <p>{dateString}</p>;
   }
 
   return (
     <div className='p-3'>
-      {renderInventionTitle()}
-      <div className='pl-2 border-sky-900 border-l'>
-        {renderCurrentAssignee()}
+      {renderInventionTitleLink()}
+      <div className='pl-2 border-sky-900 border-l flex flex-col text-xs opacity-50'>
+        {renderCurrentAssigneeLine()}
         {renderApplicationNumber()}
         {renderGrantDate()}
       </div>

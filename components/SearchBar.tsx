@@ -17,7 +17,7 @@ const SearchBar = (props: SearchBarProps): JSX.Element => {
 
     const query = new URLSearchParams();
     query.append('searchText', searchText);
-    const request = await axios.get('/api/patents?' + query);
+    const request = await axios.get('/api/patents?' + query.toString());
 
     props.setIsLoading(false);
     props.setResults(request.data);
@@ -30,9 +30,9 @@ const SearchBar = (props: SearchBarProps): JSX.Element => {
       <input 
         value={searchText}
         onChange={handleChange}
-        className="py-3 px-5 rounded-3xl w-[700px] border border-sky-900"
+        className="py-3 px-5 bg-sky-200 text-slate-900 outline-none text-xl rounded-xl w-[700px] border border-sky-900"
         type="text" 
-        placeholder="Search for a patent" 
+        placeholder="⌕ Search for a patent" 
       />
     </form>
   );

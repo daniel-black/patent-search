@@ -1,6 +1,7 @@
 import React from 'react';
 import { PatentSearchResults } from '../lib/types';
 import ResultListItem from './ResultListItem';
+import Spinner from './Spinner';
 
 type SearchResultsProps = {
   isLoading: boolean;
@@ -10,7 +11,7 @@ type SearchResultsProps = {
 const SearchResults = (props: SearchResultsProps): JSX.Element => {
   if (props.isLoading) {
     return (
-      <div>Loading...</div>
+      <Spinner />
     );
   }
 
@@ -26,16 +27,16 @@ const SearchResults = (props: SearchResultsProps): JSX.Element => {
 
   return (
     <div className='w-[700px] flex flex-start space-x-5'>
-      <div>
+      {/* <div>
         {renderResultsCount()}
-      </div>
+      </div> */}
       <div className='bg-slate-800 w-full rounded-xl border border-sky-900'>
         <ul className='divide-y divide-sky-900'>
           {props.results?.results.map(r => (
             <ResultListItem patent={r} key={r.patentApplicationNumber} /> 
           ))}
         </ul>
-      </div>
+      </div>  
     </div>
   );
 }
