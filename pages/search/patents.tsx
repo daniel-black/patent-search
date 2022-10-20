@@ -1,49 +1,27 @@
-import axios from "axios";
-import { ChangeEvent, FormEvent, useState } from "react";
-import Spinner from "../../components/Spinner";
+import { useState } from "react";
+import Divider from "../../components/Divider";
+import SearchBar from "../../components/SearchBar";
+import SearchResults from "../../components/SearchResults";
+import { PatentSearchResults } from "../../lib/types";
 
 const Patents = (): JSX.Element => {
-  const [searchText, setSearchText] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [results, setResults] = useState(null);
+  const [results, setResults] = useState<PatentSearchResults | null>(null);
+  const [isLoadingResults, setIsLoadingResults] = useState<boolean>(false);
 
-  const submitForm = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsLoading(true);
+  console.log(results);
 
-    const query = new URLSearchParams();
-    query.append('searchText', searchText);
-
-    const request = await axios.get('/api/patents?' + query);
-    setResults(request.data);
-    setIsLoading(false);
-    console.log(request.data);
-  }
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => setSearchText(e.currentTarget.value);
+  const setResultFromSearch = (r: PatentSearchResults):void => setResults(r);
+  const setSearchIsLoadingResults = (b: boolean) => setIsLoadingResults(b);
 
   return (
-    <div className="flex flex-col items-center justify-start mt-10 space-y-10">
-
+    <div className="flex flex-col items-center justify-start mt-10 pb-10 space-y-10">
       <section>
-        <form onSubmit={submitForm}>
-          <input 
-            value={searchText}
-            onChange={handleChange}
-            className="p-3 rounded-2xl w-[700px]"
-            type="text" 
-            placeholder="Search for a patent" 
-          />
-        </form>
+        <SearchBar setResults={setResultFromSearch} setIsLoading={setSearchIsLoadingResults} />
       </section>
-
+      <Divider />
       <main>
-        {isLoading && <Spinner />}
-        {!isLoading && results && <div>results: we have them</div>}
-        Results
+        <SearchResults isLoading={isLoadingResults} results={results} />
       </main>
-
     </div>
   );
 }

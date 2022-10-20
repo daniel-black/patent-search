@@ -11,7 +11,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   qs.append('searchText', query.searchText);
 
   const requestString = `${grantedPatentsEndpoint}?${qs}`;
-  console.log(requestString);
   const response = await axiosClient.get(requestString);
   console.log(response.data);
 

@@ -32,6 +32,7 @@ export type Patent = {
   descriptionText: Array<string>,
   filelocationURI: string,
   filingDate: string,
+  grantDate: string,
   furtherCPCSymbolArrayText: Array<string> | string | null,
   inventionSubjectMatterCategory: Category,
   inventionTitle: string,
